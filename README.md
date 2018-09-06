@@ -4,6 +4,7 @@ About a sencond car website,analysis a car's value
 
 - download
 > git branch -m <branch name>
+  
 > git clone git@github.com:Laurel-rao/psm-second-car.git
 
 - runserver
