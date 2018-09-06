@@ -3,7 +3,7 @@ About a sencond car website,analysis a car's value
 - use Django frameowrk
 
 - download
-> git branch -m <branch name>
+> git branch -m &lt;branch name&gt;
   
 > git clone git@github.com:Laurel-rao/psm-second-car.git
 
