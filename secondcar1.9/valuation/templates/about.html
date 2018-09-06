@@ -1,0 +1,142 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<head>
+
+		{% block script %}
+		<script src="{% static 'js/jquery-1.11.3.js'%}"></script>
+		{% endblock %}
+
+		<link rel="stylesheet" href="{% static 'css/index.css'%}"> {% block link %} {% endblock %}
+
+		<title>
+			{% block title %} 关于我们 {% endblock %}
+		</title>
+
+	</head>
+
+	<body>
+		<header>
+			<div id="header_top">
+				<div id="header_w">
+					<div id="logo">
+						<a href="#"><img src="{% static 'img/logo.png' %}"></a>
+					</div>
+					<nav>
+						<ul>
+							<li>
+								<a href="{% url 'car' %}">首页</a>
+							</li>
+							<li>
+								<a href="{% url 'about' %}">关于我们</a>
+							</li>
+						</ul>
+					</nav>
+					<div id="login_h">
+						<ul>
+							<li><img src="{% static 'img/login.png' %}"></li>
+							<li>
+								<a href="{% url 'login' %}">登录</a>
+							</li>
+							<li class="line"> | </li>
+							<li>
+								<a href="{% url 'register' %}">注册</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		
+
+		<div id="about_img"><img src="{% static 'img/about.jpg' %}"></div>
+		<div id="about">
+			<div class="title">
+				<h2><span>PSM</span>团队</h2>
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于湖南，学在北京，陕西挖油，深圳Python<br>爱好骑行，也打农药<br>瞎操心,劳碌命,力争三十而立！</p>
+				</div>
+				<div class="m_centre">
+					<h2>肖伟</h2>
+					<p>队长</p>
+				</div>
+				<img src="{% static 'img/member_xw.jpg' %}">
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于江西，学于深圳<br>陷入过英雄联盟，深入网吧，转行学python。</p>
+				</div>
+				<div class="m_centre">
+					<h2>饶佳俊</h2>
+					<p>队员</p>
+				</div>
+				<img src="{% static 'img/member_rjj.jpg' %}">
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于海南，学于厦门<br>陷入绝地求生，深入15倍镜压枪，转行学python。</p>
+				</div>
+				<div class="m_centre">
+					<h2>李祥明</h2>
+					<p>队员</p>
+				</div>
+				<img src="{% static 'img/member_lxm.jpg' %}">
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于海南，学于北京<br>陷入过夜场，深入过城堡，转行学python。</p>
+				</div>
+				<div class="m_centre">
+					<h2>钟宇</h2>
+					<p>队员</p>
+				</div>
+				<img src="{% static 'img/member_zy.jpg' %}">
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于湖北，学于湖北<br>陷入过传销，深入过日本，转行学python。</p>
+				</div>
+				<div class="m_centre">
+					<h2>燕柯</h2>
+					<p>队员</p>
+				</div>
+				<img src="{% static 'img/member_yk.jpg' %}">
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于四川，学于广州<br>陷入过KTV，深入过酒吧，转行学python。</p>
+				</div>
+				<div class="m_centre">
+					<h2>罗峰</h2>
+					<p>队员</p>
+				</div>
+				<img src="{% static 'img/member_lf.jpg' %}">
+			</div>
+
+			<div class="member">
+				<div class="m_right">
+					<p>生于广西，学在南宁<br>陷入过销售，深入IT，在学python。</p>
+				</div>
+				<div class="m_centre">
+					<h2>陆金</h2>
+					<p>队员</p>
+				</div>
+				<img src="{% static 'img/member_lj.jpg' %}">
+			</div>
+
+		</div>
+
+	</body>
+
+</html>

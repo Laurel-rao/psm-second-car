@@ -1,0 +1,252 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %} PSM-注册 {% endblock %}
+		</title>
+		<script src="/static/js/jquery-1.11.3.js"></script>
+		<script type="text/javascript" src="/static/js/valuation.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/css/gujia.css" />
+		<link rel="stylesheet" href="{% static 'css/login.css'%}">
+		<link rel="stylesheet" href="{% static 'css/index.css'%}"> {% block style %}
+		<style>
+			#login {
+				margin-top: 30px;
+			}
+		</style>
+		{% endblock %} {% block js %}
+		<script src="/static/js/jquery-1.11.3.js"></script>
+		{% endblock %}
+	</head>
+
+	<body>
+		<header>
+			<div id="header_top">
+				<div id="header_w">
+					<div id="logo">
+						<a href="#"><img src="{% static 'img/logo.png' %}"></a>
+					</div>
+					<nav>
+						<ul>
+							<li>
+								<a href="{% url 'car' %}">首页</a>
+							</li>
+							<li>
+								<a href="{% url 'about' %}">关于我们</a>
+							</li>
+						</ul>
+					</nav>
+					<div id="login_h">
+						<ul>
+							<li><img src="{% static 'img/login.png' %}"></li>
+							<li>
+								<a href="{% url 'login' %}">登录</a>
+							</li>
+							<li class="line"> | </li>
+							<li>
+								<a href="{% url 'register' %}">注册</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div id="menu">
+
+			<div id="worth">
+				<button id="gujiaBtn" class="btn gujia" style="float: right; background: rgb(117, 115, 112);height:46px">我要估价</button>
+				<div class="pop-mask"></div>
+				<div id="gujia">
+					<div class="pop-box pop-sell" id="gujiaPage">
+						<div class="pop-close js-closeGujia"></div>
+						<p class="pop-tit">免费估个价,买车卖车均有谱!</p>
+						<ul class="form">
+							<li>
+								<p class="li-t">卖车地点</p>
+								<div class="conselect mr-7">
+									<select class="seltype" id="gj_disProvince">
+										<option value="">请选择</option>
+									</select>
+								</div>
+
+								<div class="conselect">
+									<select class="seltype disabled" id="gj_disCity" disabled="disabled" name="">
+										<!-- <option value="">请选择</option> -->
+									</select>
+								</div>
+							</li>
+							<li>
+								<p class="li-t">车型</p>
+								<div class="conselect mr-7">
+									<select class="seltype seltype-72" id="gj_disbrand">
+										<option value="">请选择品牌</option>
+									</select>
+								</div>
+								<div class="conselect mr-7">
+									<select class="seltype  seltype-72 disabled" id="gj_distag" disabled="disabled"></select>
+								</div>
+								<div class="conselect">
+									<select class="seltype disabled " id="gj_discar" disabled="disabled"></select>
+								</div>
+							</li>
+							<li>
+								<p class="li-t">上牌时间</p>
+								<div class="conselect mr-7">
+									<select class="seltype disabled " id="gj_disYear" disabled="disabled"></select>
+								</div>
+								<div class="conselect">
+									<select class="seltype disabled " id="gj_dismonth" disabled="disabled"></select>
+								</div>
+							</li>
+							<li>
+								<p class="li-t">行驶里程</p>
+								<div class="odo-box" id="disRoal">
+									<input class="odo-input" placeholder="" id="gujiaRoal">
+								</div>
+							</li>
+						</ul>
+						<p class="p-error"></p>
+						<button class="sub-btn" id="gujiaSubmit">开始估价</button>
+						<!-- <p disabled="disabled" id='result'>估价结果: </p> -->
+					</div>
+				</div>
+				<div class="pop-box pop-gujia-price gujiaRes" id="gujiaResult">
+					<div class="pop-close js-closeGujia"></div>
+					<p class="pop-tit">您的爱车值这个价</p>
+					<div class="eva-con">
+						<div class="car-info">
+							<p class="car-name">
+								<span class="js_res_name">2018款 118i 领先型(进口)</span>
+								<br><em class="js_res_detail">深圳/2018年1月上牌/12万公里</em>
+							</p>
+							<p class="car-price levelC">
+								<span id="price"></span>
+								<em>万元</em>
+								<i></i>
+							</p>
+							<p class="car-new-price levelC">
+								<span style="font-size: 16px;">新车指导价(含税)：</span>
+								<span id="newPrice"></span>
+								<em>万元</em>
+								<i></i>
+							</p>
+							<p class="car-avg-price levelC">
+								<span style="font-size: 16px;">全国平均售价：</span>
+								<span id="avgPrice"></span>
+								<em>万元</em>
+								<i></i>
+							</p>
+						</div>
+
+						<div class="car-info">
+							<div class="sellbtn">
+								<button class="sub-btn2" onclick="#" id="Submit">我要卖车</button>
+							</div>
+							<div class="odo-box2" id="sellCar">
+								<input class="odo-input2" placeholder="请输入手机号" id="sellPhone">
+							</div>
+						</div>
+
+						<div class="eva-chart">
+							<div class="price-sect">
+								<!-- <p class="chart-tit">售价区间</p> -->
+							</div>
+							<div class="price-trend">
+								<!-- <p class="chart-tit">平均售价趋势</p> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<ul class="menu_t">
+				<li>
+					<a href="psm#carcountmap">二手车分布</a>
+					</li>
+					<li>
+						<a href="page2#echarts1">谁更保值</a>
+					</li>
+					<li>
+						<a href="page2#echarts2">供给最大</a>
+					</li>
+					<li>
+						<a href="page2#echarts3">价位偏好</a>
+					</li>
+					<li>
+						<a href="page2#echarts4">多久卖车</a>
+					</li>
+			</ul>
+		</div>
+
+		<div id="container">
+			<h2>
+        {% block topic %}
+          注册会员
+        {% endblock %}
+      </h2>
+			<div id="content">
+				<!-- 右侧先写右浮动，左侧不用给浮动了 -->
+
+				{% block login %}
+				<div id="login">
+					<form id="formReg" action="/register/" method="post">
+						{% csrf_token %}
+						<!-- 1.手机号 -->
+						<div class="form-line">
+							<div><input type="text" name="uphone" class="form-contro1"></div>
+							<p>手机号：</p>
+						</div>
+
+						<div class="form-line2">
+							<div>{{errMsg}}</div>
+						</div>
+						<!-- 2.密码 -->
+						<div class="form-line">
+							<div><input type="password" id="upwd" name="upwd" class="form-contro1"></div>
+							<p>密码：</p>
+						</div>
+						<!-- 3.确认密码 -->
+						<div class="form-line">
+							<div><input type="password" id="cpwd" class="form-contro1"></div>
+							<p>确认密码：</p>
+						</div>
+						<!-- 4.用户名称 -->
+						<div class="form-line">
+							<div><input type="text" name="uname" class="form-contro1" value="{{uname}}"></div>
+							<p>用户名称：</p>
+						</div>
+						<!-- 5.邮箱 -->
+						<div class="form-line">
+							<div><input type="email" name="uemail" class="form-contro1" value="{{uemail}}"></div>
+							<p>邮箱：</p>
+						</div>
+						<!-- 6.注册 -->
+						<div class="form-line">
+							<div>
+								<a href="/login" class="goReg">已有登录</a>
+								<input type="submit" value="注册" class="btnLogin">
+							</div>
+						</div>
+					</form>
+				</div>
+				{% endblock %}
+
+				<div id="left">
+					<p id="img">
+						<img src="{% static 'img/huiyuan.jpg' %}"> {% block anchor %}
+						<a href="/login">
+							会员登录
+						</a>
+						{% endblock %}
+
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

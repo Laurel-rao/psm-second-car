@@ -1,0 +1,349 @@
+/*估价窗口CSS*/
+li,
+ol,
+ul {
+	list-style: none;
+}
+
+ul,
+li,
+span,
+div,
+p {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0
+}
+
+li {
+	display: list-item;
+	text-align: -webkit-match-parent;
+}
+
+p {
+	display: block;
+	-webkit-margin-before: 1em;
+	-webkit-margin-after: 1em;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+}
+
+.pop-mask.active {
+	display: block;
+}
+
+.pop-mask {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2000;
+	background: #000;
+	opacity: .8;
+	display: none;
+}
+
+.gujia {
+	display: block;
+	cursor:pointer;
+}
+
+.pop-sell {
+	margin: -275px 0 0 -400px;
+	height: 500px;
+	width: 800px;
+	font-family: "微软雅黑";
+}
+
+.pop-box {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 2100;
+	box-sizing: border-box;
+	background: #fff;
+	border: 3px solid #d8dde5;
+	display: none;
+}
+
+.pop-box.show {
+	display: block;
+}
+
+.pop-gujia-price {
+	margin: -308px 0 0 -400px;
+	height: 616px;
+	width: 800px;
+	font-family: "微软雅黑";
+}
+
+.pop-close {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	background: url(/static/img/del.png) no-repeat 100%;
+}
+
+.pop-tit {
+	margin: 0;
+	line-height: 74px;
+	font-size: 24px;
+	margin-bottom: 15px;
+	color: #495056;
+	text-align: center;
+}
+
+.form li {
+	height: 54px;
+	padding-left: 55px;
+}
+
+.conselect,
+.li-t {
+	float: left;
+}
+
+.li-t {
+	margin: 0;
+	width: 112px;
+	font-size: 18px;
+	line-height: 42px;
+	color: #495056;
+	clear: left
+}
+
+.mr-7 {
+	margin-right: 15px;
+	/*margin-top: 16px;*/
+}
+
+.seltype {
+	width: 214px;
+	height: 42px;
+	line-height: 20px;
+	padding: 10px 38px 10px 14px;
+	border: 1px solid #bec6ce;
+	border-radius: 3px;
+	font-family: "microsoft yahei";
+	font-size: 16px;
+	color: #495056;
+	cursor: pointer;
+	/*background: url(img/seldown.png) no-repeat right 0;*/
+}
+
+.seltype-72 {
+	width: 155px;
+}
+
+.seltype.disabled {
+	background-color: #f8f8f8;
+}
+
+.odo-box {
+	float: left;
+}
+
+.odo-input {
+	width: 428px;
+	height: 20px;
+	line-height: 20px;
+	padding: 10px 79px 10px 14px;
+	border: 1px solid #bec6ce;
+	border-radius: 3px;
+	font-family: "microsoft yahei";
+	font-size: 16px;
+	color: #495056;
+	background: url(/static/img/seldown.png) no-repeat right -80px;
+}
+
+.sub-btn {
+	display: block;
+	width: 410px;
+	height: 50px;
+	border-radius: 2px;
+	background: #22ac38;
+	border: none;
+	color: #fff;
+	font-size: 20px;
+	margin: 0 auto;
+	font-family: "microsoft yahei";
+}
+
+.p-error {
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 14px;
+	color: #ff7e00;
+	margin-top: -12px;
+}
+
+.eva-con {
+	padding: 0 90px 0 80px;
+}
+
+.car-info {
+	margin-top: 76px;
+	height: 150px;
+	padding-bottom: 25px;
+	position: relative;
+}
+
+.car-name {
+	margin: 0;
+	float: left;
+	font-size: 18px;
+	line-height: 24px;
+	color: #757f89;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: 385px;
+}
+
+em {
+	font-style: normal;
+}
+
+.car-name em {
+	color: #bec6ce;
+	font-size: 14px;
+}
+
+.car-name em {
+	color: #bec6ce;
+	font-size: 14px;
+}
+
+.car-price {
+	margin: 0;
+	font-size: 28px;
+	height: 50px;
+	line-height: 50px;
+	color: #22ac38;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.car-price i {
+	position: absolute;
+	top: -3px;
+	right: -25px;
+	display: block;
+	width: 42px;
+	height: 30px;
+	background: url(/static/img/seldown.png) no-repeat 0 -200px;
+}
+
+.car-price em {
+	color: #757f89;
+	font-size: 14px;
+}
+
+.car-avg-price{
+	margin: 50px 0px;
+    font-size: 28px;
+    height: 50px;
+    line-height: 50px;
+    color: #22ac38;
+    position: absolute;
+    right: 0;
+    top:45px;
+}
+
+.car-avg-price i {
+	position: absolute;
+	top: -3px;
+	right: -25px;
+	display: block;
+	width: 42px;
+	height: 30px;
+}
+
+.car-avg-price em {
+	color: #757f89;
+	font-size: 14px;
+}
+.car-new-price{
+	margin: 50px 0px;
+    font-size: 28px;
+    height: 50px;
+    line-height: 50px;
+    color: #22ac38;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.car-new-price i {
+	position: absolute;
+	top: -3px;
+	right: -25px;
+	display: block;
+	width: 42px;
+	height: 30px;
+}
+
+.car-new-price em {
+	color: #757f89;
+	font-size: 14px;
+}
+.chart-tit {
+	float: left;
+	line-height: 36px;
+	font-size: 16px;
+	color: #495056;
+	text-align: center;
+	padding-bottom: 34px;
+}
+
+.btn.gujia{
+	float: right;
+    width: 200px;
+    height: 46px;
+    margin-right: 11px;
+    font-size: 19px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    background: #22ac38;
+}
+.sellbtn {
+	float: right;
+	width: 250px;
+	height:80px;
+}
+.sub-btn2 {
+	display: block;
+	width: 210px;
+	height: 50px;
+	border-radius: 2px;
+	background: #22ac38;
+	border: none;
+	color: #fff;
+	font-size: 20px;
+	margin: 0 auto;
+	font-family: "microsoft yahei";
+}
+.odo-box2{
+	float: left;
+}
+.odo-input2 {
+	margin: 0px;
+    float: left;
+    width: 328px;
+    height: 29px;
+    font-size: 16px;
+    font-family: microsoft yahei;
+    color: #495056;
+    padding: 10px 15px;
+    border: 1px solid #bec6ce;
+    border-radius: 3px;
+}
+

@@ -1,0 +1,2343 @@
+{% load static %}
+<!DOCTYPE html>
+<html style="height: 100%">
+
+	<head>
+		<meta charset="utf-8">
+		<title>PSM二手车估值主页</title>
+		<script src="/static/js/jquery-1.11.3.js"></script>
+		<script type="text/javascript" src="/static/js/valuation.js"></script>
+		<script type="text/javascript" src="{% static 'js/SPE.js' %}"></script>
+		<link rel="stylesheet" href="{% static 'css/SPE.css' %}">
+		<link rel="stylesheet" href="{% static 'css/login.css'%}">
+		<link rel="stylesheet" href="{% static 'css/index.css'%}">
+		<link rel="stylesheet" type="text/css" href="/static/css/gujia.css" />
+	</head>
+
+	<body>
+		<header>
+			<div id="header_top">
+				<div id="header_w">
+					<div id="header_w">
+						<div id="logo">
+							<a href="#"><img src="{% static 'img/logo.png' %}"></a>
+						</div>
+						<nav>
+							<ul>
+								<li>
+									<a href="{% url 'car' %}">首页</a>
+								</li>
+								<li>
+									<a href="{% url 'about' %}">关于我们</a>
+								</li>
+							</ul>
+						</nav>
+						<div id="login_h">
+							<ul>
+								<li><img src="{% static 'img/login.png' %}"></li>
+								<li>
+									<a href="{% url 'login' %}">登录</a>
+								</li>
+								<li class="line"> | </li>
+								<li>
+									<a href="{% url 'register' %}">注册</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+		</header>
+		<div id="menu">
+			<button id="gujiaBtn" class="btn gujia" style="float: right; background: rgb(117, 115, 112);height:46px">我要估价</button>
+			<div class="pop-mask"></div>
+			<div id="gujia">
+				<div class="pop-box pop-sell" id="gujiaPage">
+					<div class="pop-close js-closeGujia"></div>
+					<p class="pop-tit">免费估个价,买车卖车均有谱!</p>
+					<ul class="form">
+						<li>
+							<p class="li-t">卖车地点</p>
+							<div class="conselect mr-7">
+								<select class="seltype" id="gj_disProvince">
+									<option value="">请选择</option>
+								</select>
+							</div>
+
+							<div class="conselect">
+								<select class="seltype disabled" id="gj_disCity" disabled="disabled" name="">
+									<!-- <option value="">请选择</option> -->
+								</select>
+							</div>
+						</li>
+						<li>
+							<p class="li-t">车型</p>
+							<div class="conselect mr-7">
+								<select class="seltype seltype-72" id="gj_disbrand">
+									<option value="">请选择品牌</option>
+								</select>
+							</div>
+							<div class="conselect mr-7">
+								<select class="seltype  seltype-72 disabled" id="gj_distag" disabled="disabled"></select>
+							</div>
+							<div class="conselect">
+								<select class="seltype disabled " id="gj_discar" disabled="disabled"></select>
+							</div>
+						</li>
+						<li>
+							<p class="li-t">上牌时间</p>
+							<div class="conselect mr-7">
+								<select class="seltype disabled " id="gj_disYear" disabled="disabled"></select>
+							</div>
+							<div class="conselect">
+								<select class="seltype disabled " id="gj_dismonth" disabled="disabled"></select>
+							</div>
+						</li>
+						<li>
+							<p class="li-t">行驶里程</p>
+							<div class="odo-box" id="disRoal">
+								<input class="odo-input" placeholder="" id="gujiaRoal">
+							</div>
+						</li>
+					</ul>
+					<p class="p-error"></p>
+					<button class="sub-btn" id="gujiaSubmit">开始估价</button>
+					<!-- <p disabled="disabled" id='result'>估价结果: </p> -->
+				</div>
+			</div>
+			<div class="pop-box pop-gujia-price gujiaRes" id="gujiaResult">
+				<div class="pop-close js-closeGujia"></div>
+				<p class="pop-tit">您的爱车值这个价</p>
+				<div class="eva-con">
+					<div class="car-info">
+						<p class="car-name">
+							<span class="js_res_name">2018款 118i 领先型(进口)</span>
+							<br><em class="js_res_detail">深圳/2018年1月上牌/12万公里</em>
+						</p>
+						<p class="car-price levelC">
+							<span id="price"></span>
+							<em>万元</em>
+							<i></i>
+						</p>
+						<p class="car-new-price levelC">
+							<span style="font-size: 16px;">新车指导价(含税)：</span>
+							<span id="newPrice"></span>
+							<em>万元</em>
+							<i></i>
+						</p>
+						<p class="car-avg-price levelC">
+							<span style="font-size: 16px;">全国平均售价：</span>
+							<span id="avgPrice"></span>
+							<em>万元</em>
+							<i></i>
+						</p>
+					</div>
+
+					<div class="car-info">
+						<div class="sellbtn">
+							<button class="sub-btn2" onclick="#" id="Submit">我要卖车</button>
+						</div>
+						<div class="odo-box2" id="sellCar">
+							<input class="odo-input2" placeholder="请输入手机号" id="sellPhone">
+						</div>
+					</div>
+
+					<div class="eva-chart">
+						<div class="price-sect">
+							<!-- <p class="chart-tit">售价区间</p> -->
+						</div>
+						<div class="price-trend">
+							<!-- <p class="chart-tit">平均售价趋势</p> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="worth">
+
+			</div>
+
+			<ul class="menu_t">
+				<li>
+					<a href="#carcountmap">二手车分布</a>
+				</li>
+				<li>
+					<a href="page2#echarts1">谁更保值</a>
+					</li>
+					<li>
+						<a href="page2#echarts2">供给最大</a>
+					</li>
+					<li>
+						<a href="page2#echarts3">价位偏好</a>
+					</li>
+					<li>
+						<a href="page2#echarts4">多久卖车</a>
+					</li>
+			</ul>
+		</div>
+		<div id="carcountmap" style="height:600px; width:1200px; margin: 0 auto">
+
+			<div id="chart-panel" style="height: 100%"></div>
+			<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.6&key=71b7119ba58b3e113a95951ccf340381"></script>
+			<script type="text/javascript" src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+			<script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+			<script type="text/javascript">
+				var testData = [{
+					'value': 2545,
+					'adcode': '110000',
+					'name': '北京市',
+					'padcode': 100000
+				}, {
+					'value': 1023,
+					'adcode': '120000',
+					'name': '天津市',
+					'padcode': 100000
+				}, {
+					'value': 5384,
+					'adcode': '130000',
+					'name': '河北省',
+					'padcode': 100000
+				}, {
+					'value': 2898,
+					'adcode': '140000',
+					'name': '山西省',
+					'padcode': 100000
+				}, {
+					'value': 3051,
+					'adcode': '150000',
+					'name': '内蒙古自治区',
+					'padcode': 100000
+				}, {
+					'value': 5275,
+					'adcode': '210000',
+					'name': '辽宁省',
+					'padcode': 100000
+				}, {
+					'value': 2791,
+					'adcode': '220000',
+					'name': '吉林省',
+					'padcode': 100000
+				}, {
+					'value': 2925,
+					'adcode': '230000',
+					'name': '黑龙江省',
+					'padcode': 100000
+				}, {
+					'value': 1819,
+					'adcode': '310000',
+					'name': '上海市',
+					'padcode': 100000
+				}, {
+					'value': 11045,
+					'adcode': '320000',
+					'name': '江苏省',
+					'padcode': 100000
+				}, {
+					'value': 6792,
+					'adcode': '330000',
+					'name': '浙江省',
+					'padcode': 100000
+				}, {
+					'value': 5020,
+					'adcode': '340000',
+					'name': '安徽省',
+					'padcode': 100000
+				}, {
+					'value': 2747,
+					'adcode': '350000',
+					'name': '福建省',
+					'padcode': 100000
+				}, {
+					'value': 1594,
+					'adcode': '360000',
+					'name': '江西省',
+					'padcode': 100000
+				}, {
+					'value': 9091,
+					'adcode': '370000',
+					'name': '山东省',
+					'padcode': 100000
+				}, {
+					'value': 4692,
+					'adcode': '410000',
+					'name': '河南省',
+					'padcode': 100000
+				}, {
+					'value': 4265,
+					'adcode': '420000',
+					'name': '湖北省',
+					'padcode': 100000
+				}, {
+					'value': 3397,
+					'adcode': '430000',
+					'name': '湖南省',
+					'padcode': 100000
+				}, {
+					'value': 7285,
+					'adcode': '440000',
+					'name': '广东省',
+					'padcode': 100000
+				}, {
+					'value': 1759,
+					'adcode': '450000',
+					'name': '广西壮族自治区',
+					'padcode': 100000
+				}, {
+					'value': 3,
+					'adcode': '460000',
+					'name': '海南省',
+					'padcode': 100000
+				}, {
+					'value': 2617,
+					'adcode': '500000',
+					'name': '重庆市',
+					'padcode': 100000
+				}, {
+					'value': 6852,
+					'adcode': '510000',
+					'name': '四川省',
+					'padcode': 100000
+				}, {
+					'value': 1181,
+					'adcode': '520000',
+					'name': '贵州省',
+					'padcode': 100000
+				}, {
+					'value': 1317,
+					'adcode': '530000',
+					'name': '云南省',
+					'padcode': 100000
+				}, {
+					'value': 0,
+					'adcode': '540000',
+					'name': '西藏自治区',
+					'padcode': 100000
+				}, {
+					'value': 1813,
+					'adcode': '610000',
+					'name': '陕西省',
+					'padcode': 100000
+				}, {
+					'value': 809,
+					'adcode': '620000',
+					'name': '甘肃省',
+					'padcode': 100000
+				}, {
+					'value': 7,
+					'adcode': '630000',
+					'name': '青海省',
+					'padcode': 100000
+				}, {
+					'value': 377,
+					'adcode': '640000',
+					'name': '宁夏回族自治区',
+					'padcode': 100000
+				}, {
+					'value': 1099,
+					'adcode': '650000',
+					'name': '新疆维吾尔自治区',
+					'padcode': 100000
+				}, {
+					'value': 0,
+					'adcode': '710000',
+					'name': '台湾省',
+					'padcode': 100000
+				}, {
+					'value': 0,
+					'adcode': '810000',
+					'name': '香港特别行政区',
+					'padcode': 100000
+				}, {
+					'value': 0,
+					'adcode': '820000',
+					'name': '澳门特别行政区',
+					'padcode': 100000
+				}, {
+					'value': 1044,
+					'adcode': '130100',
+					'name': '石家庄市',
+					'padcode': '130000'
+				}, {
+					'value': 616,
+					'adcode': '130200',
+					'name': '唐山市',
+					'padcode': '130000'
+				}, {
+					'value': 219,
+					'adcode': '130300',
+					'name': '秦皇岛市',
+					'padcode': '130000'
+				}, {
+					'value': 803,
+					'adcode': '130400',
+					'name': '邯郸市',
+					'padcode': '130000'
+				}, {
+					'value': 240,
+					'adcode': '130500',
+					'name': '邢台市',
+					'padcode': '130000'
+				}, {
+					'value': 808,
+					'adcode': '130600',
+					'name': '保定市',
+					'padcode': '130000'
+				}, {
+					'value': 44,
+					'adcode': '130700',
+					'name': '张家口市',
+					'padcode': '130000'
+				}, {
+					'value': 212,
+					'adcode': '130800',
+					'name': '承德市',
+					'padcode': '130000'
+				}, {
+					'value': 325,
+					'adcode': '130900',
+					'name': '沧州市',
+					'padcode': '130000'
+				}, {
+					'value': 892,
+					'adcode': '131000',
+					'name': '廊坊市',
+					'padcode': '130000'
+				}, {
+					'value': 181,
+					'adcode': '131100',
+					'name': '衡水市',
+					'padcode': '130000'
+				}, {
+					'value': 1202,
+					'adcode': '140100',
+					'name': '太原市',
+					'padcode': '140000'
+				}, {
+					'value': 572,
+					'adcode': '140200',
+					'name': '大同市',
+					'padcode': '140000'
+				}, {
+					'value': 12,
+					'adcode': '140300',
+					'name': '阳泉市',
+					'padcode': '140000'
+				}, {
+					'value': 441,
+					'adcode': '140400',
+					'name': '长治市',
+					'padcode': '140000'
+				}, {
+					'value': 16,
+					'adcode': '140500',
+					'name': '晋城市',
+					'padcode': '140000'
+				}, {
+					'value': 23,
+					'adcode': '140600',
+					'name': '朔州市',
+					'padcode': '140000'
+				}, {
+					'value': 63,
+					'adcode': '140700',
+					'name': '晋中市',
+					'padcode': '140000'
+				}, {
+					'value': 316,
+					'adcode': '140800',
+					'name': '运城市',
+					'padcode': '140000'
+				}, {
+					'value': 14,
+					'adcode': '140900',
+					'name': '忻州市',
+					'padcode': '140000'
+				}, {
+					'value': 239,
+					'adcode': '141000',
+					'name': '临汾市',
+					'padcode': '140000'
+				}, {
+					'value': 0,
+					'adcode': '141100',
+					'name': '吕梁市',
+					'padcode': '140000'
+				}, {
+					'value': 1641,
+					'adcode': '150100',
+					'name': '呼和浩特市',
+					'padcode': '150000'
+				}, {
+					'value': 1097,
+					'adcode': '150200',
+					'name': '包头市',
+					'padcode': '150000'
+				}, {
+					'value': 11,
+					'adcode': '150300',
+					'name': '乌海市',
+					'padcode': '150000'
+				}, {
+					'value': 8,
+					'adcode': '150400',
+					'name': '赤峰市',
+					'padcode': '150000'
+				}, {
+					'value': 10,
+					'adcode': '150500',
+					'name': '通辽市',
+					'padcode': '150000'
+				}, {
+					'value': 272,
+					'adcode': '150600',
+					'name': '鄂尔多斯市',
+					'padcode': '150000'
+				}, {
+					'value': 4,
+					'adcode': '150700',
+					'name': '呼伦贝尔市',
+					'padcode': '150000'
+				}, {
+					'value': 0,
+					'adcode': '150800',
+					'name': '巴彦淖尔市',
+					'padcode': '150000'
+				}, {
+					'value': 0,
+					'adcode': '150900',
+					'name': '乌兰察布市',
+					'padcode': '150000'
+				}, {
+					'value': 2,
+					'adcode': '152200',
+					'name': '兴安盟',
+					'padcode': '150000'
+				}, {
+					'value': 6,
+					'adcode': '152500',
+					'name': '锡林郭勒盟',
+					'padcode': '150000'
+				}, {
+					'value': 0,
+					'adcode': '152900',
+					'name': '阿拉善盟',
+					'padcode': '150000'
+				}, {
+					'value': 2036,
+					'adcode': '210100',
+					'name': '沈阳市',
+					'padcode': '210000'
+				}, {
+					'value': 1635,
+					'adcode': '210200',
+					'name': '大连市',
+					'padcode': '210000'
+				}, {
+					'value': 473,
+					'adcode': '210300',
+					'name': '鞍山市',
+					'padcode': '210000'
+				}, {
+					'value': 188,
+					'adcode': '210400',
+					'name': '抚顺市',
+					'padcode': '210000'
+				}, {
+					'value': 11,
+					'adcode': '210500',
+					'name': '本溪市',
+					'padcode': '210000'
+				}, {
+					'value': 6,
+					'adcode': '210600',
+					'name': '丹东市',
+					'padcode': '210000'
+				}, {
+					'value': 268,
+					'adcode': '210700',
+					'name': '锦州市',
+					'padcode': '210000'
+				}, {
+					'value': 331,
+					'adcode': '210800',
+					'name': '营口市',
+					'padcode': '210000'
+				}, {
+					'value': 8,
+					'adcode': '210900',
+					'name': '阜新市',
+					'padcode': '210000'
+				}, {
+					'value': 190,
+					'adcode': '211000',
+					'name': '辽阳市',
+					'padcode': '210000'
+				}, {
+					'value': 20,
+					'adcode': '211100',
+					'name': '盘锦市',
+					'padcode': '210000'
+				}, {
+					'value': 33,
+					'adcode': '211200',
+					'name': '铁岭市',
+					'padcode': '210000'
+				}, {
+					'value': 13,
+					'adcode': '211300',
+					'name': '朝阳市',
+					'padcode': '210000'
+				}, {
+					'value': 63,
+					'adcode': '211400',
+					'name': '葫芦岛市',
+					'padcode': '210000'
+				}, {
+					'value': 1690,
+					'adcode': '220100',
+					'name': '长春市',
+					'padcode': '220000'
+				}, {
+					'value': 742,
+					'adcode': '220200',
+					'name': '吉林市',
+					'padcode': '220000'
+				}, {
+					'value': 37,
+					'adcode': '220300',
+					'name': '四平市',
+					'padcode': '220000'
+				}, {
+					'value': 11,
+					'adcode': '220400',
+					'name': '辽源市',
+					'padcode': '220000'
+				}, {
+					'value': 16,
+					'adcode': '220500',
+					'name': '通化市',
+					'padcode': '220000'
+				}, {
+					'value': 4,
+					'adcode': '220600',
+					'name': '白山市',
+					'padcode': '220000'
+				}, {
+					'value': 264,
+					'adcode': '220700',
+					'name': '松原市',
+					'padcode': '220000'
+				}, {
+					'value': 15,
+					'adcode': '220800',
+					'name': '白城市',
+					'padcode': '220000'
+				}, {
+					'value': 12,
+					'adcode': '222400',
+					'name': '延边朝鲜族自治州',
+					'padcode': '220000'
+				}, {
+					'value': 1761,
+					'adcode': '230100',
+					'name': '哈尔滨市',
+					'padcode': '230000'
+				}, {
+					'value': 274,
+					'adcode': '230200',
+					'name': '齐齐哈尔市',
+					'padcode': '230000'
+				}, {
+					'value': 7,
+					'adcode': '230300',
+					'name': '鸡西市',
+					'padcode': '230000'
+				}, {
+					'value': 9,
+					'adcode': '230400',
+					'name': '鹤岗市',
+					'padcode': '230000'
+				}, {
+					'value': 11,
+					'adcode': '230500',
+					'name': '双鸭山市',
+					'padcode': '230000'
+				}, {
+					'value': 447,
+					'adcode': '230600',
+					'name': '大庆市',
+					'padcode': '230000'
+				}, {
+					'value': 5,
+					'adcode': '230700',
+					'name': '伊春市',
+					'padcode': '230000'
+				}, {
+					'value': 247,
+					'adcode': '230800',
+					'name': '佳木斯市',
+					'padcode': '230000'
+				}, {
+					'value': 6,
+					'adcode': '230900',
+					'name': '七台河市',
+					'padcode': '230000'
+				}, {
+					'value': 123,
+					'adcode': '231000',
+					'name': '牡丹江市',
+					'padcode': '230000'
+				}, {
+					'value': 4,
+					'adcode': '231100',
+					'name': '黑河市',
+					'padcode': '230000'
+				}, {
+					'value': 30,
+					'adcode': '231200',
+					'name': '绥化市',
+					'padcode': '230000'
+				}, {
+					'value': 1,
+					'adcode': '232700',
+					'name': '大兴安岭地区',
+					'padcode': '230000'
+				}, {
+					'value': 1686,
+					'adcode': '320100',
+					'name': '南京市',
+					'padcode': '320000'
+				}, {
+					'value': 956,
+					'adcode': '320200',
+					'name': '无锡市',
+					'padcode': '320000'
+				}, {
+					'value': 1284,
+					'adcode': '320300',
+					'name': '徐州市',
+					'padcode': '320000'
+				}, {
+					'value': 679,
+					'adcode': '320400',
+					'name': '常州市',
+					'padcode': '320000'
+				}, {
+					'value': 1764,
+					'adcode': '320500',
+					'name': '苏州市',
+					'padcode': '320000'
+				}, {
+					'value': 847,
+					'adcode': '320600',
+					'name': '南通市',
+					'padcode': '320000'
+				}, {
+					'value': 365,
+					'adcode': '320700',
+					'name': '连云港市',
+					'padcode': '320000'
+				}, {
+					'value': 585,
+					'adcode': '320800',
+					'name': '淮安市',
+					'padcode': '320000'
+				}, {
+					'value': 761,
+					'adcode': '320900',
+					'name': '盐城市',
+					'padcode': '320000'
+				}, {
+					'value': 619,
+					'adcode': '321000',
+					'name': '扬州市',
+					'padcode': '320000'
+				}, {
+					'value': 384,
+					'adcode': '321100',
+					'name': '镇江市',
+					'padcode': '320000'
+				}, {
+					'value': 497,
+					'adcode': '321200',
+					'name': '泰州市',
+					'padcode': '320000'
+				}, {
+					'value': 618,
+					'adcode': '321300',
+					'name': '宿迁市',
+					'padcode': '320000'
+				}, {
+					'value': 1001,
+					'adcode': '330100',
+					'name': '杭州市',
+					'padcode': '330000'
+				}, {
+					'value': 1070,
+					'adcode': '330200',
+					'name': '宁波市',
+					'padcode': '330000'
+				}, {
+					'value': 1082,
+					'adcode': '330300',
+					'name': '温州市',
+					'padcode': '330000'
+				}, {
+					'value': 711,
+					'adcode': '330400',
+					'name': '嘉兴市',
+					'padcode': '330000'
+				}, {
+					'value': 485,
+					'adcode': '330500',
+					'name': '湖州市',
+					'padcode': '330000'
+				}, {
+					'value': 646,
+					'adcode': '330600',
+					'name': '绍兴市',
+					'padcode': '330000'
+				}, {
+					'value': 1074,
+					'adcode': '330700',
+					'name': '金华市',
+					'padcode': '330000'
+				}, {
+					'value': 236,
+					'adcode': '330800',
+					'name': '衢州市',
+					'padcode': '330000'
+				}, {
+					'value': 10,
+					'adcode': '330900',
+					'name': '舟山市',
+					'padcode': '330000'
+				}, {
+					'value': 354,
+					'adcode': '331000',
+					'name': '台州市',
+					'padcode': '330000'
+				}, {
+					'value': 123,
+					'adcode': '331100',
+					'name': '丽水市',
+					'padcode': '330000'
+				}, {
+					'value': 1707,
+					'adcode': '340100',
+					'name': '合肥市',
+					'padcode': '340000'
+				}, {
+					'value': 549,
+					'adcode': '340200',
+					'name': '芜湖市',
+					'padcode': '340000'
+				}, {
+					'value': 371,
+					'adcode': '340300',
+					'name': '蚌埠市',
+					'padcode': '340000'
+				}, {
+					'value': 214,
+					'adcode': '340400',
+					'name': '淮南市',
+					'padcode': '340000'
+				}, {
+					'value': 288,
+					'adcode': '340500',
+					'name': '马鞍山市',
+					'padcode': '340000'
+				}, {
+					'value': 162,
+					'adcode': '340600',
+					'name': '淮北市',
+					'padcode': '340000'
+				}, {
+					'value': 227,
+					'adcode': '340700',
+					'name': '铜陵市',
+					'padcode': '340000'
+				}, {
+					'value': 246,
+					'adcode': '340800',
+					'name': '安庆市',
+					'padcode': '340000'
+				}, {
+					'value': 18,
+					'adcode': '341000',
+					'name': '黄山市',
+					'padcode': '340000'
+				}, {
+					'value': 76,
+					'adcode': '341100',
+					'name': '滁州市',
+					'padcode': '340000'
+				}, {
+					'value': 432,
+					'adcode': '341200',
+					'name': '阜阳市',
+					'padcode': '340000'
+				}, {
+					'value': 300,
+					'adcode': '341300',
+					'name': '宿州市',
+					'padcode': '340000'
+				}, {
+					'value': 229,
+					'adcode': '341500',
+					'name': '六安市',
+					'padcode': '340000'
+				}, {
+					'value': 80,
+					'adcode': '341600',
+					'name': '亳州市',
+					'padcode': '340000'
+				}, {
+					'value': 63,
+					'adcode': '341700',
+					'name': '池州市',
+					'padcode': '340000'
+				}, {
+					'value': 58,
+					'adcode': '341800',
+					'name': '宣城市',
+					'padcode': '340000'
+				}, {
+					'value': 708,
+					'adcode': '350100',
+					'name': '福州市',
+					'padcode': '350000'
+				}, {
+					'value': 923,
+					'adcode': '350200',
+					'name': '厦门市',
+					'padcode': '350000'
+				}, {
+					'value': 161,
+					'adcode': '350300',
+					'name': '莆田市',
+					'padcode': '350000'
+				}, {
+					'value': 11,
+					'adcode': '350400',
+					'name': '三明市',
+					'padcode': '350000'
+				}, {
+					'value': 482,
+					'adcode': '350500',
+					'name': '泉州市',
+					'padcode': '350000'
+				}, {
+					'value': 339,
+					'adcode': '350600',
+					'name': '漳州市',
+					'padcode': '350000'
+				}, {
+					'value': 26,
+					'adcode': '350700',
+					'name': '南平市',
+					'padcode': '350000'
+				}, {
+					'value': 68,
+					'adcode': '350800',
+					'name': '龙岩市',
+					'padcode': '350000'
+				}, {
+					'value': 29,
+					'adcode': '350900',
+					'name': '宁德市',
+					'padcode': '350000'
+				}, {
+					'value': 517,
+					'adcode': '360100',
+					'name': '南昌市',
+					'padcode': '360000'
+				}, {
+					'value': 20,
+					'adcode': '360200',
+					'name': '景德镇市',
+					'padcode': '360000'
+				}, {
+					'value': 18,
+					'adcode': '360300',
+					'name': '萍乡市',
+					'padcode': '360000'
+				}, {
+					'value': 112,
+					'adcode': '360400',
+					'name': '九江市',
+					'padcode': '360000'
+				}, {
+					'value': 6,
+					'adcode': '360500',
+					'name': '新余市',
+					'padcode': '360000'
+				}, {
+					'value': 13,
+					'adcode': '360600',
+					'name': '鹰潭市',
+					'padcode': '360000'
+				}, {
+					'value': 446,
+					'adcode': '360700',
+					'name': '赣州市',
+					'padcode': '360000'
+				}, {
+					'value': 349,
+					'adcode': '360800',
+					'name': '吉安市',
+					'padcode': '360000'
+				}, {
+					'value': 36,
+					'adcode': '360900',
+					'name': '宜春市',
+					'padcode': '360000'
+				}, {
+					'value': 22,
+					'adcode': '361000',
+					'name': '抚州市',
+					'padcode': '360000'
+				}, {
+					'value': 55,
+					'adcode': '361100',
+					'name': '上饶市',
+					'padcode': '360000'
+				}, {
+					'value': 1096,
+					'adcode': '370100',
+					'name': '济南市',
+					'padcode': '370000'
+				}, {
+					'value': 1452,
+					'adcode': '370200',
+					'name': '青岛市',
+					'padcode': '370000'
+				}, {
+					'value': 733,
+					'adcode': '370300',
+					'name': '淄博市',
+					'padcode': '370000'
+				}, {
+					'value': 292,
+					'adcode': '370400',
+					'name': '枣庄市',
+					'padcode': '370000'
+				}, {
+					'value': 291,
+					'adcode': '370500',
+					'name': '东营市',
+					'padcode': '370000'
+				}, {
+					'value': 727,
+					'adcode': '370600',
+					'name': '烟台市',
+					'padcode': '370000'
+				}, {
+					'value': 481,
+					'adcode': '370700',
+					'name': '潍坊市',
+					'padcode': '370000'
+				}, {
+					'value': 727,
+					'adcode': '370800',
+					'name': '济宁市',
+					'padcode': '370000'
+				}, {
+					'value': 362,
+					'adcode': '370900',
+					'name': '泰安市',
+					'padcode': '370000'
+				}, {
+					'value': 464,
+					'adcode': '371000',
+					'name': '威海市',
+					'padcode': '370000'
+				}, {
+					'value': 343,
+					'adcode': '371100',
+					'name': '日照市',
+					'padcode': '370000'
+				}, {
+					'value': 16,
+					'adcode': '371200',
+					'name': '莱芜市',
+					'padcode': '370000'
+				}, {
+					'value': 1124,
+					'adcode': '371300',
+					'name': '临沂市',
+					'padcode': '370000'
+				}, {
+					'value': 222,
+					'adcode': '371400',
+					'name': '德州市',
+					'padcode': '370000'
+				}, {
+					'value': 211,
+					'adcode': '371500',
+					'name': '聊城市',
+					'padcode': '370000'
+				}, {
+					'value': 245,
+					'adcode': '371600',
+					'name': '滨州市',
+					'padcode': '370000'
+				}, {
+					'value': 305,
+					'adcode': '371700',
+					'name': '菏泽市',
+					'padcode': '370000'
+				}, {
+					'value': 1918,
+					'adcode': '410100',
+					'name': '郑州市',
+					'padcode': '410000'
+				}, {
+					'value': 253,
+					'adcode': '410200',
+					'name': '开封市',
+					'padcode': '410000'
+				}, {
+					'value': 394,
+					'adcode': '410300',
+					'name': '洛阳市',
+					'padcode': '410000'
+				}, {
+					'value': 31,
+					'adcode': '410400',
+					'name': '平顶山市',
+					'padcode': '410000'
+				}, {
+					'value': 324,
+					'adcode': '410500',
+					'name': '安阳市',
+					'padcode': '410000'
+				}, {
+					'value': 16,
+					'adcode': '410600',
+					'name': '鹤壁市',
+					'padcode': '410000'
+				}, {
+					'value': 304,
+					'adcode': '410700',
+					'name': '新乡市',
+					'padcode': '410000'
+				}, {
+					'value': 229,
+					'adcode': '410800',
+					'name': '焦作市',
+					'padcode': '410000'
+				}, {
+					'value': 19,
+					'adcode': '410900',
+					'name': '濮阳市',
+					'padcode': '410000'
+				}, {
+					'value': 162,
+					'adcode': '411000',
+					'name': '许昌市',
+					'padcode': '410000'
+				}, {
+					'value': 14,
+					'adcode': '411100',
+					'name': '漯河市',
+					'padcode': '410000'
+				}, {
+					'value': 6,
+					'adcode': '411200',
+					'name': '三门峡市',
+					'padcode': '410000'
+				}, {
+					'value': 411,
+					'adcode': '411300',
+					'name': '南阳市',
+					'padcode': '410000'
+				}, {
+					'value': 180,
+					'adcode': '411400',
+					'name': '商丘市',
+					'padcode': '410000'
+				}, {
+					'value': 222,
+					'adcode': '411500',
+					'name': '信阳市',
+					'padcode': '410000'
+				}, {
+					'value': 53,
+					'adcode': '411600',
+					'name': '周口市',
+					'padcode': '410000'
+				}, {
+					'value': 156,
+					'adcode': '411700',
+					'name': '驻马店市',
+					'padcode': '410000'
+				}, {
+					'value': 2322,
+					'adcode': '420100',
+					'name': '武汉市',
+					'padcode': '420000'
+				}, {
+					'value': 293,
+					'adcode': '420200',
+					'name': '黄石市',
+					'padcode': '420000'
+				}, {
+					'value': 323,
+					'adcode': '420300',
+					'name': '十堰市',
+					'padcode': '420000'
+				}, {
+					'value': 571,
+					'adcode': '420500',
+					'name': '宜昌市',
+					'padcode': '420000'
+				}, {
+					'value': 0,
+					'adcode': '420600',
+					'name': '襄阳市',
+					'padcode': '420000'
+				}, {
+					'value': 56,
+					'adcode': '420700',
+					'name': '鄂州市',
+					'padcode': '420000'
+				}, {
+					'value': 174,
+					'adcode': '420800',
+					'name': '荆门市',
+					'padcode': '420000'
+				}, {
+					'value': 121,
+					'adcode': '420900',
+					'name': '孝感市',
+					'padcode': '420000'
+				}, {
+					'value': 267,
+					'adcode': '421000',
+					'name': '荆州市',
+					'padcode': '420000'
+				}, {
+					'value': 117,
+					'adcode': '421100',
+					'name': '黄冈市',
+					'padcode': '420000'
+				}, {
+					'value': 14,
+					'adcode': '421200',
+					'name': '咸宁市',
+					'padcode': '420000'
+				}, {
+					'value': 7,
+					'adcode': '421300',
+					'name': '随州市',
+					'padcode': '420000'
+				}, {
+					'value': 0,
+					'adcode': '422800',
+					'name': '恩施土家族苗族自治州',
+					'padcode': '420000'
+				}, {
+					'value': 0,
+					'adcode': '429004',
+					'name': '仙桃市',
+					'padcode': '420000'
+				}, {
+					'value': 0,
+					'adcode': '429005',
+					'name': '潜江市',
+					'padcode': '420000'
+				}, {
+					'value': 0,
+					'adcode': '429006',
+					'name': '天门市',
+					'padcode': '420000'
+				}, {
+					'value': 0,
+					'adcode': '429021',
+					'name': '神农架林区',
+					'padcode': '420000'
+				}, {
+					'value': 1346,
+					'adcode': '430100',
+					'name': '长沙市',
+					'padcode': '430000'
+				}, {
+					'value': 306,
+					'adcode': '430200',
+					'name': '株洲市',
+					'padcode': '430000'
+				}, {
+					'value': 333,
+					'adcode': '430300',
+					'name': '湘潭市',
+					'padcode': '430000'
+				}, {
+					'value': 222,
+					'adcode': '430400',
+					'name': '衡阳市',
+					'padcode': '430000'
+				}, {
+					'value': 100,
+					'adcode': '430500',
+					'name': '邵阳市',
+					'padcode': '430000'
+				}, {
+					'value': 334,
+					'adcode': '430600',
+					'name': '岳阳市',
+					'padcode': '430000'
+				}, {
+					'value': 294,
+					'adcode': '430700',
+					'name': '常德市',
+					'padcode': '430000'
+				}, {
+					'value': 10,
+					'adcode': '430800',
+					'name': '张家界市',
+					'padcode': '430000'
+				}, {
+					'value': 158,
+					'adcode': '430900',
+					'name': '益阳市',
+					'padcode': '430000'
+				}, {
+					'value': 163,
+					'adcode': '431000',
+					'name': '郴州市',
+					'padcode': '430000'
+				}, {
+					'value': 32,
+					'adcode': '431100',
+					'name': '永州市',
+					'padcode': '430000'
+				}, {
+					'value': 10,
+					'adcode': '431200',
+					'name': '怀化市',
+					'padcode': '430000'
+				}, {
+					'value': 89,
+					'adcode': '431300',
+					'name': '娄底市',
+					'padcode': '430000'
+				}, {
+					'value': 0,
+					'adcode': '433100',
+					'name': '湘西土家族苗族自治州',
+					'padcode': '430000'
+				}, {
+					'value': 565,
+					'adcode': '440100',
+					'name': '广州市',
+					'padcode': '440000'
+				}, {
+					'value': 26,
+					'adcode': '440200',
+					'name': '韶关市',
+					'padcode': '440000'
+				}, {
+					'value': 1375,
+					'adcode': '440300',
+					'name': '深圳市',
+					'padcode': '440000'
+				}, {
+					'value': 336,
+					'adcode': '440400',
+					'name': '珠海市',
+					'padcode': '440000'
+				}, {
+					'value': 237,
+					'adcode': '440500',
+					'name': '汕头市',
+					'padcode': '440000'
+				}, {
+					'value': 462,
+					'adcode': '440600',
+					'name': '佛山市',
+					'padcode': '440000'
+				}, {
+					'value': 319,
+					'adcode': '440700',
+					'name': '江门市',
+					'padcode': '440000'
+				}, {
+					'value': 129,
+					'adcode': '440800',
+					'name': '湛江市',
+					'padcode': '440000'
+				}, {
+					'value': 49,
+					'adcode': '440900',
+					'name': '茂名市',
+					'padcode': '440000'
+				}, {
+					'value': 172,
+					'adcode': '441200',
+					'name': '肇庆市',
+					'padcode': '440000'
+				}, {
+					'value': 648,
+					'adcode': '441300',
+					'name': '惠州市',
+					'padcode': '440000'
+				}, {
+					'value': 77,
+					'adcode': '441400',
+					'name': '梅州市',
+					'padcode': '440000'
+				}, {
+					'value': 33,
+					'adcode': '441500',
+					'name': '汕尾市',
+					'padcode': '440000'
+				}, {
+					'value': 53,
+					'adcode': '441600',
+					'name': '河源市',
+					'padcode': '440000'
+				}, {
+					'value': 20,
+					'adcode': '441700',
+					'name': '阳江市',
+					'padcode': '440000'
+				}, {
+					'value': 117,
+					'adcode': '441800',
+					'name': '清远市',
+					'padcode': '440000'
+				}, {
+					'value': 1939,
+					'adcode': '441900',
+					'name': '东莞市',
+					'padcode': '440000'
+				}, {
+					'value': 646,
+					'adcode': '442000',
+					'name': '中山市',
+					'padcode': '440000'
+				}, {
+					'value': 29,
+					'adcode': '445100',
+					'name': '潮州市',
+					'padcode': '440000'
+				}, {
+					'value': 22,
+					'adcode': '445200',
+					'name': '揭阳市',
+					'padcode': '440000'
+				}, {
+					'value': 31,
+					'adcode': '445300',
+					'name': '云浮市',
+					'padcode': '440000'
+				}, {
+					'value': 763,
+					'adcode': '450100',
+					'name': '南宁市',
+					'padcode': '450000'
+				}, {
+					'value': 385,
+					'adcode': '450200',
+					'name': '柳州市',
+					'padcode': '450000'
+				}, {
+					'value': 475,
+					'adcode': '450300',
+					'name': '桂林市',
+					'padcode': '450000'
+				}, {
+					'value': 7,
+					'adcode': '450400',
+					'name': '梧州市',
+					'padcode': '450000'
+				}, {
+					'value': 8,
+					'adcode': '450500',
+					'name': '北海市',
+					'padcode': '450000'
+				}, {
+					'value': 7,
+					'adcode': '450600',
+					'name': '防城港市',
+					'padcode': '450000'
+				}, {
+					'value': 13,
+					'adcode': '450700',
+					'name': '钦州市',
+					'padcode': '450000'
+				}, {
+					'value': 17,
+					'adcode': '450800',
+					'name': '贵港市',
+					'padcode': '450000'
+				}, {
+					'value': 23,
+					'adcode': '450900',
+					'name': '玉林市',
+					'padcode': '450000'
+				}, {
+					'value': 14,
+					'adcode': '451000',
+					'name': '百色市',
+					'padcode': '450000'
+				}, {
+					'value': 6,
+					'adcode': '451100',
+					'name': '贺州市',
+					'padcode': '450000'
+				}, {
+					'value': 14,
+					'adcode': '451200',
+					'name': '河池市',
+					'padcode': '450000'
+				}, {
+					'value': 15,
+					'adcode': '451300',
+					'name': '来宾市',
+					'padcode': '450000'
+				}, {
+					'value': 12,
+					'adcode': '451400',
+					'name': '崇左市',
+					'padcode': '450000'
+				}, {
+					'value': 2,
+					'adcode': '460100',
+					'name': '海口市',
+					'padcode': '460000'
+				}, {
+					'value': 1,
+					'adcode': '460200',
+					'name': '三亚市',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '460300',
+					'name': '三沙市',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '460400',
+					'name': '儋州市',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '469025',
+					'name': '白沙黎族自治县',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '469026',
+					'name': '昌江黎族自治县',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '469027',
+					'name': '乐东黎族自治县',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '469028',
+					'name': '陵水黎族自治县',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '469029',
+					'name': '保亭黎族苗族自治县',
+					'padcode': '460000'
+				}, {
+					'value': 0,
+					'adcode': '469030',
+					'name': '琼中黎族苗族自治县',
+					'padcode': '460000'
+				}, {
+					'value': 3086,
+					'adcode': '510100',
+					'name': '成都市',
+					'padcode': '510000'
+				}, {
+					'value': 194,
+					'adcode': '510300',
+					'name': '自贡市',
+					'padcode': '510000'
+				}, {
+					'value': 4,
+					'adcode': '510400',
+					'name': '攀枝花市',
+					'padcode': '510000'
+				}, {
+					'value': 331,
+					'adcode': '510500',
+					'name': '泸州市',
+					'padcode': '510000'
+				}, {
+					'value': 214,
+					'adcode': '510600',
+					'name': '德阳市',
+					'padcode': '510000'
+				}, {
+					'value': 412,
+					'adcode': '510700',
+					'name': '绵阳市',
+					'padcode': '510000'
+				}, {
+					'value': 85,
+					'adcode': '510800',
+					'name': '广元市',
+					'padcode': '510000'
+				}, {
+					'value': 241,
+					'adcode': '510900',
+					'name': '遂宁市',
+					'padcode': '510000'
+				}, {
+					'value': 206,
+					'adcode': '511000',
+					'name': '内江市',
+					'padcode': '510000'
+				}, {
+					'value': 200,
+					'adcode': '511100',
+					'name': '乐山市',
+					'padcode': '510000'
+				}, {
+					'value': 386,
+					'adcode': '511300',
+					'name': '南充市',
+					'padcode': '510000'
+				}, {
+					'value': 210,
+					'adcode': '511400',
+					'name': '眉山市',
+					'padcode': '510000'
+				}, {
+					'value': 339,
+					'adcode': '511500',
+					'name': '宜宾市',
+					'padcode': '510000'
+				}, {
+					'value': 254,
+					'adcode': '511600',
+					'name': '广安市',
+					'padcode': '510000'
+				}, {
+					'value': 528,
+					'adcode': '511700',
+					'name': '达州市',
+					'padcode': '510000'
+				}, {
+					'value': 16,
+					'adcode': '511800',
+					'name': '雅安市',
+					'padcode': '510000'
+				}, {
+					'value': 26,
+					'adcode': '511900',
+					'name': '巴中市',
+					'padcode': '510000'
+				}, {
+					'value': 114,
+					'adcode': '512000',
+					'name': '资阳市',
+					'padcode': '510000'
+				}, {
+					'value': 1,
+					'adcode': '513200',
+					'name': '阿坝藏族羌族自治州',
+					'padcode': '510000'
+				}, {
+					'value': 1,
+					'adcode': '513300',
+					'name': '甘孜藏族自治州',
+					'padcode': '510000'
+				}, {
+					'value': 4,
+					'adcode': '513400',
+					'name': '凉山彝族自治州',
+					'padcode': '510000'
+				}, {
+					'value': 706,
+					'adcode': '520100',
+					'name': '贵阳市',
+					'padcode': '520000'
+				}, {
+					'value': 12,
+					'adcode': '520200',
+					'name': '六盘水市',
+					'padcode': '520000'
+				}, {
+					'value': 276,
+					'adcode': '520300',
+					'name': '遵义市',
+					'padcode': '520000'
+				}, {
+					'value': 104,
+					'adcode': '520400',
+					'name': '安顺市',
+					'padcode': '520000'
+				}, {
+					'value': 47,
+					'adcode': '520500',
+					'name': '毕节市',
+					'padcode': '520000'
+				}, {
+					'value': 16,
+					'adcode': '520600',
+					'name': '铜仁市',
+					'padcode': '520000'
+				}, {
+					'value': 0,
+					'adcode': '522300',
+					'name': '黔西南布依族苗族自治州',
+					'padcode': '520000'
+				}, {
+					'value': 20,
+					'adcode': '522600',
+					'name': '黔东南苗族侗族自治州',
+					'padcode': '520000'
+				}, {
+					'value': 0,
+					'adcode': '522700',
+					'name': '黔南布依族苗族自治州',
+					'padcode': '520000'
+				}, {
+					'value': 1073,
+					'adcode': '530100',
+					'name': '昆明市',
+					'padcode': '530000'
+				}, {
+					'value': 204,
+					'adcode': '530300',
+					'name': '曲靖市',
+					'padcode': '530000'
+				}, {
+					'value': 7,
+					'adcode': '530400',
+					'name': '玉溪市',
+					'padcode': '530000'
+				}, {
+					'value': 6,
+					'adcode': '530500',
+					'name': '保山市',
+					'padcode': '530000'
+				}, {
+					'value': 10,
+					'adcode': '530600',
+					'name': '昭通市',
+					'padcode': '530000'
+				}, {
+					'value': 2,
+					'adcode': '530700',
+					'name': '丽江市',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '530800',
+					'name': '普洱市',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '530900',
+					'name': '临沧市',
+					'padcode': '530000'
+				}, {
+					'value': 6,
+					'adcode': '532300',
+					'name': '楚雄彝族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 7,
+					'adcode': '532500',
+					'name': '红河哈尼族彝族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '532600',
+					'name': '文山壮族苗族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 1,
+					'adcode': '532800',
+					'name': '西双版纳傣族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '532900',
+					'name': '大理白族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 1,
+					'adcode': '533100',
+					'name': '德宏傣族景颇族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '533300',
+					'name': '怒江傈僳族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '533400',
+					'name': '迪庆藏族自治州',
+					'padcode': '530000'
+				}, {
+					'value': 0,
+					'adcode': '540100',
+					'name': '拉萨市',
+					'padcode': '540000'
+				}, {
+					'value': 0,
+					'adcode': '540200',
+					'name': '日喀则市',
+					'padcode': '540000'
+				}, {
+					'value': 0,
+					'adcode': '540300',
+					'name': '昌都市',
+					'padcode': '540000'
+				}, {
+					'value': 0,
+					'adcode': '540400',
+					'name': '林芝市',
+					'padcode': '540000'
+				}, {
+					'value': 0,
+					'adcode': '540500',
+					'name': '山南市',
+					'padcode': '540000'
+				}, {
+					'value': 0,
+					'adcode': '540600',
+					'name': '那曲市',
+					'padcode': '540000'
+				}, {
+					'value': 0,
+					'adcode': '542500',
+					'name': '阿里地区',
+					'padcode': '540000'
+				}, {
+					'value': 1529,
+					'adcode': '610100',
+					'name': '西安市',
+					'padcode': '610000'
+				}, {
+					'value': 6,
+					'adcode': '610200',
+					'name': '铜川市',
+					'padcode': '610000'
+				}, {
+					'value': 128,
+					'adcode': '610300',
+					'name': '宝鸡市',
+					'padcode': '610000'
+				}, {
+					'value': 73,
+					'adcode': '610400',
+					'name': '咸阳市',
+					'padcode': '610000'
+				}, {
+					'value': 23,
+					'adcode': '610500',
+					'name': '渭南市',
+					'padcode': '610000'
+				}, {
+					'value': 11,
+					'adcode': '610600',
+					'name': '延安市',
+					'padcode': '610000'
+				}, {
+					'value': 13,
+					'adcode': '610700',
+					'name': '汉中市',
+					'padcode': '610000'
+				}, {
+					'value': 9,
+					'adcode': '610800',
+					'name': '榆林市',
+					'padcode': '610000'
+				}, {
+					'value': 16,
+					'adcode': '610900',
+					'name': '安康市',
+					'padcode': '610000'
+				}, {
+					'value': 5,
+					'adcode': '611000',
+					'name': '商洛市',
+					'padcode': '610000'
+				}, {
+					'value': 790,
+					'adcode': '620100',
+					'name': '兰州市',
+					'padcode': '620000'
+				}, {
+					'value': 0,
+					'adcode': '620200',
+					'name': '嘉峪关市',
+					'padcode': '620000'
+				}, {
+					'value': 1,
+					'adcode': '620300',
+					'name': '金昌市',
+					'padcode': '620000'
+				}, {
+					'value': 2,
+					'adcode': '620400',
+					'name': '白银市',
+					'padcode': '620000'
+				}, {
+					'value': 6,
+					'adcode': '620500',
+					'name': '天水市',
+					'padcode': '620000'
+				}, {
+					'value': 1,
+					'adcode': '620600',
+					'name': '武威市',
+					'padcode': '620000'
+				}, {
+					'value': 1,
+					'adcode': '620700',
+					'name': '张掖市',
+					'padcode': '620000'
+				}, {
+					'value': 0,
+					'adcode': '620800',
+					'name': '平凉市',
+					'padcode': '620000'
+				}, {
+					'value': 3,
+					'adcode': '620900',
+					'name': '酒泉市',
+					'padcode': '620000'
+				}, {
+					'value': 2,
+					'adcode': '621000',
+					'name': '庆阳市',
+					'padcode': '620000'
+				}, {
+					'value': 3,
+					'adcode': '621100',
+					'name': '定西市',
+					'padcode': '620000'
+				}, {
+					'value': 0,
+					'adcode': '621200',
+					'name': '陇南市',
+					'padcode': '620000'
+				}, {
+					'value': 0,
+					'adcode': '622900',
+					'name': '临夏回族自治州',
+					'padcode': '620000'
+				}, {
+					'value': 0,
+					'adcode': '623000',
+					'name': '甘南藏族自治州',
+					'padcode': '620000'
+				}, {
+					'value': 5,
+					'adcode': '630100',
+					'name': '西宁市',
+					'padcode': '630000'
+				}, {
+					'value': 2,
+					'adcode': '630200',
+					'name': '海东市',
+					'padcode': '630000'
+				}, {
+					'value': 0,
+					'adcode': '632200',
+					'name': '海北藏族自治州',
+					'padcode': '630000'
+				}, {
+					'value': 0,
+					'adcode': '632300',
+					'name': '黄南藏族自治州',
+					'padcode': '630000'
+				}, {
+					'value': 0,
+					'adcode': '632500',
+					'name': '海南藏族自治州',
+					'padcode': '630000'
+				}, {
+					'value': 0,
+					'adcode': '632600',
+					'name': '果洛藏族自治州',
+					'padcode': '630000'
+				}, {
+					'value': 0,
+					'adcode': '632700',
+					'name': '玉树藏族自治州',
+					'padcode': '630000'
+				}, {
+					'value': 0,
+					'adcode': '632800',
+					'name': '海西蒙古族藏族自治州',
+					'padcode': '630000'
+				}, {
+					'value': 369,
+					'adcode': '640100',
+					'name': '银川市',
+					'padcode': '640000'
+				}, {
+					'value': 1,
+					'adcode': '640200',
+					'name': '石嘴山市',
+					'padcode': '640000'
+				}, {
+					'value': 5,
+					'adcode': '640300',
+					'name': '吴忠市',
+					'padcode': '640000'
+				}, {
+					'value': 1,
+					'adcode': '640400',
+					'name': '固原市',
+					'padcode': '640000'
+				}, {
+					'value': 1,
+					'adcode': '640500',
+					'name': '中卫市',
+					'padcode': '640000'
+				}, {
+					'value': 1092,
+					'adcode': '650100',
+					'name': '乌鲁木齐市',
+					'padcode': '650000'
+				}, {
+					'value': 5,
+					'adcode': '650200',
+					'name': '克拉玛依市',
+					'padcode': '650000'
+				}, {
+					'value': 1,
+					'adcode': '650400',
+					'name': '吐鲁番市',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '650500',
+					'name': '哈密市',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '652300',
+					'name': '昌吉回族自治州',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '652700',
+					'name': '博尔塔拉蒙古自治州',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '652800',
+					'name': '巴音郭楞蒙古自治州',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '652900',
+					'name': '阿克苏地区',
+					'padcode': '650000'
+				}, {
+					'value': 1,
+					'adcode': '653000',
+					'name': '克孜勒苏柯尔克孜自治州',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '653100',
+					'name': '喀什地区',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '653200',
+					'name': '和田地区',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '654000',
+					'name': '伊犁哈萨克自治州',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '654200',
+					'name': '塔城地区',
+					'padcode': '650000'
+				}, {
+					'value': 0,
+					'adcode': '654300',
+					'name': '阿勒泰地区',
+					'padcode': '650000'
+				}];
+				var img = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD4AAAA+CAYAAABzwahEAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NjQzNjQwQjA3NTM4MTFFOEE5MjVEM0IwMjBENkU4RUYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NjQzNjQwQjE3NTM4MTFFOEE5MjVEM0IwMjBENkU4RUYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo2NDM2NDBBRTc1MzgxMUU4QTkyNUQzQjAyMEQ2RThFRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo2NDM2NDBBRjc1MzgxMUU4QTkyNUQzQjAyMEQ2RThFRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqxKGNcAABFSSURBVHja1FtbcBxl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';
+
+				function GDMap(params) {
+					this.params = params;
+					this.container = (params.container ? params.container : 'container');
+					this.adcode = (params.adcode ? params.adcode : 100000);
+
+					this.map;
+					this.mapData;
+					this.colorScale;
+
+					return this.initAMap();
+				}
+				GDMap.prototype = {
+					constructor: GDMap,
+					createColorScale: function() {
+						var max = d3.max(this.mapData, function(d) {
+							return d.value
+						});
+						var min = d3.min(this.mapData, function(d) {
+							return d.value
+						});
+						if(max == min) min = min - 1000;
+						this.colorScale = d3.scaleLinear().domain([min, max]).range(["#f2f2f2", "#383838"]);
+					},
+					initAMap: function() {
+						var _this = this;
+
+						if(this.map) {
+							this.drawOverLay();
+						} else {
+							var opts = {
+								resizeEnable: true,
+								isHotspot: false,
+								zoomEnable: false,
+								zoom: 5,
+								center: [104.114129, 34.550339],
+								mapStyle: 'amap://styles/2afaefd00ede02c6f6e5ebef5c92c0cc'
+							};
+							this.map = new AMap.Map(this.container, opts);
+							AMapUI.loadUI(['geo/DistrictExplorer'], function(DistrictExplorer) {
+								var districtExplorer = window.districtExplorer = new DistrictExplorer({
+									eventSupport: true,
+									map: _this.map
+								});
+								districtExplorer.on('featureClick', function(e, feature) {
+									_this.featureClick(feature);
+								});
+								districtExplorer.on('outsideClick', function(e) {
+									if(_this.adcode != 100000) {
+										var acroutes = currentAreaNode.getProps().acroutes;
+										var acrLength = acroutes.length;
+										_this.adcode = acrLength > 1 ? acroutes[1] : acroutes[0];
+										_this.drawOverLay();
+									}
+								});
+								districtExplorer.on('featureMouseout featureMouseover', function(e, feature) {
+									_this.featureHover(e, feature);
+								});
+								_this.drawOverLay();
+							});
+							return this;
+						}
+					},
+					drawOverLay: function() {
+						var data = this.getDataByAdcode();
+						if(data.length) {
+							this.mapData = data;
+							this.createColorScale();
+
+							var newData = {};
+							for(var i = 0; i < data.length; i++) {
+								newData[data[i].adcode] = data[i];
+							}
+							this.renderAreaNode(newData);
+						} else {
+							console.warn("No Data: " + this.adcode);
+						}
+					},
+					renderAreaNode: function(data) {
+						districtExplorer.clearFeaturePolygons();
+						this.map.clearMap();
+						var _this = this;
+						//根据城市adcode获取下级城市信息
+						districtExplorer.loadAreaNode(_this.adcode, function(error, areaNode) {
+							if(error) {
+								console.error(error);
+								return;
+							}
+							currentAreaNode = window.currentAreaNode = areaNode;
+							districtExplorer.setAreaNodesForLocating([currentAreaNode]);
+
+							districtExplorer.renderSubFeatures(areaNode, function(feature, i) {
+								var fadcode = feature.properties.adcode;
+								var fdata = data[fadcode];
+								if(fdata) {
+									var v = fdata.value;
+									var fc = _this.colorScale(v);
+									_this.drawMarker(feature);
+									_this.drawText(feature, fdata);
+									return {
+										cursor: 'pointer',
+										bubble: true,
+										strokeColor: '#fff',
+										strokeOpacity: 1,
+										strokeWeight: 1,
+										fillColor: fc,
+										extData: {
+											fillColor: fc
+										},
+										fillOpacity: 1,
+									};
+								}
+							});
+							switch(_this.adcode) {
+								case 100000:
+									_this.map.setZoomAndCenter(5, [104.114129, 34.550339]);
+									break;
+								case 460000:
+									_this.map.setZoomAndCenter(8, [110.33119, 19.031971]);
+									break;
+								default:
+									_this.map.setFitView(districtExplorer.getAllFeaturePolygons());
+									break;
+							}
+						});
+					},
+					drawText: function(feature, data) {
+						var position = feature.properties.centroid ? feature.properties.centroid : feature.properties.center;
+						var textEle = '<div style="text-align:center;line-height: 13px;">' + data.name + '<br>' + data.value + '</div>';
+						var text = new AMap.Text({
+							text: textEle,
+							textAlign: 'center',
+							verticalAlign: 'middle',
+							cursor: 'pointer',
+							bubble: true,
+							style: {
+								'background-color': 'transparent',
+								'border': 'solid 0px transparent',
+								'padding': '0px',
+								'font-size': '10px'
+							},
+							position: position
+						});
+						feature.text = text;
+						text.setMap(this.map);
+					},
+					drawMarker: function(feature) {
+						var position = feature.properties.centroid ? feature.properties.centroid : feature.properties.center;
+						var icon = new AMap.Icon({
+							size: new AMap.Size(62, 62),
+							image: img
+						});
+						var marker = new AMap.Marker({
+							offset: new AMap.Pixel(-31, -34),
+							icon: icon,
+							bubble: true,
+							draggable: false,
+							cursor: 'pointer',
+							position: position
+						});
+						feature.marker = marker;
+						marker.setMap(this.map);
+					},
+					featureClick: function(feature) {
+						var data = this.mapData;
+						var props = feature.properties;
+						var value = 0;
+						for(var i = 0; i < data.length; i++) {
+							var item = data[i];
+							if(item.adcode == props.adcode) {
+								value = item.value
+								break;
+							}
+						}
+						if(props.childrenNum > 0 && value > 0) {
+							this.adcode = feature.properties.adcode;
+							this.drawOverLay();
+						}
+					},
+					featureHover: function(event, feature) {
+						var marker = feature.marker;
+						var text = feature.text;
+						if(!marker || !text) return;
+
+						var zindex = 100;
+						var isHover = false;
+						if(event.type == 'featureMouseover') {
+							isHover = true;
+							zindex = 110;
+						}
+						marker.setzIndex(zindex);
+						text.setzIndex(zindex);
+						var targetAdcode = feature.properties.adcode;
+						var polys = districtExplorer.findFeaturePolygonsByAdcode(targetAdcode);
+
+						for(var i = 0, len = polys.length; i < len; i++) {
+							var opts = polys[i].getOptions();
+							polys[i].setOptions({
+								fillColor: (isHover ? '#ccc' : opts.extData.fillColor)
+								//fillOpacity: isHover ? 0.9 : 1
+							});
+						}
+
+					},
+					getDataByAdcode: function() {
+						var adcode = this.adcode;
+						var res = [];
+						for(var i = 0; i < testData.length; i++) {
+							var item = testData[i];
+							if(item.padcode == adcode) {
+								res.push(item);
+							}
+						}
+						return res;
+					}
+				}
+				var myGDMap = new GDMap({
+					container: 'chart-panel',
+					adcode: 100000
+				});
+			</script>
+			<div class="Box">
+				<div class="content">
+
+					<div class="Box_con clearfix">
+						<span class="btnl btn" id="btnl"></span>
+						<span class="btnr btn" id="btnr"></span>
+
+						<div class="conbox" id="BoxUl">
+							<ul>
+								<li class="cur"><img src="{% static 'img/1.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/2.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/3.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/4.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/5.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/6.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/7.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/8.jpg'%}" alt="" /></li>
+
+								<li class="cur"><img src="{% static 'img/9.jpg'%}" alt="" /></li>
+							</ul>
+						</div>
+
+						<p class="BoxSwitch" id="BoxSwitch">
+							<span class="cur"></span>
+							<span></span>
+							<span></span>
+							<span></span>
+						</p>
+
+					</div>
+
+				</div>
+			</div>
+			<script type="text/javascript">
+				//滚动元素id，左切换按钮，右切换按钮，切换元素个数id,滚动方式，切换方向，是否自动滚动，滚动距离，滚动时间，滚动间隔，显示个数
+				LbMove('BoxUl', 'btnl', 'btnr', 'BoxSwitch', true, 'left', true, 305, 1000, 5000, 4);
+			</script>
+		</div>
+	</body>
+
+</html>

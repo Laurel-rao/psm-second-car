@@ -1,0 +1,612 @@
+{% load static %}
+<!DOCTYPE html>
+<html style="height: 100%">
+
+    <head>
+        <meta charset="utf-8">
+        <title>PSM二手车分析图表页</title>
+        <script src="/static/js/jquery-1.11.3.js"></script>
+        <script type="text/javascript" src="/static/js/valuation.js"></script>
+        <script type="text/javascript" src="/static/js/echarts.common.min.js"></script>
+        <link rel="stylesheet" href="{% static 'css/login.css'%}">
+        <link rel="stylesheet" href="{% static 'css/index.css'%}">
+        <link rel="stylesheet" type="text/css" href="/static/css/gujia.css" />
+        <link rel="stylesheet" href="{% static 'css/page.css'%}">
+    </head>
+
+    <body>
+        <header>
+            <div id="header_top">
+                <div id="header_w">
+                    <div id="header_w">
+                        <div id="logo">
+                            <a href="#"><img src="{% static 'img/logo.png' %}"></a>
+                        </div>
+                        <nav>
+                            <ul>
+                                <li>
+                                    <a href="{% url 'car' %}">首页</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'about' %}">关于我们</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <div id="login_h">
+                            <ul>
+                                <li><img src="{% static 'img/login.png' %}"></li>
+                                <li>
+                                    <a href="{% url 'login' %}">登录</a>
+                                </li>
+                                <li class="line"> | </li>
+                                <li>
+                                    <a href="{% url 'register' %}">注册</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </header>
+        <div id="menu">
+            <button id="gujiaBtn" class="btn gujia" style="float: right; background: rgb(117, 115, 112);height:46px">我要估价</button>
+            <div class="pop-mask"></div>
+            <div id="gujia">
+                <div class="pop-box pop-sell" id="gujiaPage">
+                    <div class="pop-close js-closeGujia"></div>
+                    <p class="pop-tit">免费估个价,买车卖车均有谱!</p>
+                    <ul class="form">
+                        <li>
+                            <p class="li-t">卖车地点</p>
+                            <div class="conselect mr-7">
+                                <select class="seltype" id="gj_disProvince">
+                                    <option value="">请选择</option>
+                                </select>
+                            </div>
+
+                            <div class="conselect">
+                                <select class="seltype disabled" id="gj_disCity" disabled="disabled" name="">
+                                    <!-- <option value="">请选择</option> -->
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="li-t">车型</p>
+                            <div class="conselect mr-7">
+                                <select class="seltype seltype-72" id="gj_disbrand">
+                                    <option value="">请选择品牌</option>
+                                </select>
+                            </div>
+                            <div class="conselect mr-7">
+                                <select class="seltype  seltype-72 disabled" id="gj_distag" disabled="disabled"></select>
+                            </div>
+                            <div class="conselect">
+                                <select class="seltype disabled " id="gj_discar" disabled="disabled"></select>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="li-t">上牌时间</p>
+                            <div class="conselect mr-7">
+                                <select class="seltype disabled " id="gj_disYear" disabled="disabled"></select>
+                            </div>
+                            <div class="conselect">
+                                <select class="seltype disabled " id="gj_dismonth" disabled="disabled"></select>
+                            </div>
+                        </li>
+                        <li>
+                            <p class="li-t">行驶里程</p>
+                            <div class="odo-box" id="disRoal">
+                                <input class="odo-input" placeholder="" id="gujiaRoal">
+                            </div>
+                        </li>
+                    </ul>
+                    <p class="p-error"></p>
+                    <button class="sub-btn" id="gujiaSubmit">开始估价</button>
+                    <!-- <p disabled="disabled" id='result'>估价结果: </p> -->
+                </div>
+            </div>
+            <div class="pop-box pop-gujia-price gujiaRes" id="gujiaResult">
+                <div class="pop-close js-closeGujia"></div>
+                <p class="pop-tit">您的爱车值这个价</p>
+                <div class="eva-con">
+                    <div class="car-info">
+                        <p class="car-name">
+                            <span class="js_res_name">2018款 118i 领先型(进口)</span>
+                            <br><em class="js_res_detail">深圳/2018年1月上牌/12万公里</em>
+                        </p>
+                        <p class="car-price levelC">
+                            <span id="price"></span>
+                            <em>万元</em>
+                            <i></i>
+                        </p>
+                        <p class="car-new-price levelC">
+                            <span style="font-size: 16px;">新车指导价(含税)：</span>
+                            <span id="newPrice"></span>
+                            <em>万元</em>
+                            <i></i>
+                        </p>
+                        <p class="car-avg-price levelC">
+                            <span style="font-size: 16px;">全国平均售价：</span>
+                            <span id="avgPrice"></span>
+                            <em>万元</em>
+                            <i></i>
+                        </p>
+                    </div>
+
+                    <div class="car-info">
+                        <div class="sellbtn">
+                            <button class="sub-btn2" onclick="#" id="Submit">我要卖车</button>
+                        </div>
+                        <div class="odo-box2" id="sellCar">
+                            <input class="odo-input2" placeholder="请输入手机号" id="sellPhone">
+                        </div>
+                    </div>
+
+                    <div class="eva-chart">
+                        <div class="price-sect">
+                            <!-- <p class="chart-tit">售价区间</p> -->
+                        </div>
+                        <div class="price-trend">
+                            <!-- <p class="chart-tit">平均售价趋势</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="worth">
+
+            </div>
+
+            <ul class="menu_t">
+                <li>
+                    <a href="psm#carcountmap">二手车分布</a>
+                </li>
+                <li>
+                    <a href="#e1">谁更保值</a>
+                </li>
+                <li>
+                    <a href="#e2">供给最大</a>
+                </li>
+                <li>
+                    <a href="#e3">价位偏好</a>
+                </li>
+                <li>
+                    <a href="#e4">多久卖车</a>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- gif 图片车 -->
+        <div id="page">
+        <div class="content-constrain">
+            <div class="pane-content-constrain">
+                <div class="panel-panel">
+                    <div class="panel-pane pane-page-content">
+                    <div class="pane-content">
+                    <div class="panel-display ">
+                    
+                    <section id="article_content" class="panel-panel">
+                    <div class="panel-pane pane-node">
+
+                    <div class="pane-content">
+                    <div id="node-29497" class="node node-marketing-page clearfix" about="/page/models" typeof="sioc:Item foaf:Document">
+
+
+                    <h2><a href="https://www.tesla.cn/page/models"></a></h2>
+                    <span property="dc:title" content="" class="rdf-meta element-hidden"></span>
+
+                    <div class="content">
+                    <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded">
+                    <section id="range-calculator" class="section-range-calculator hide-on-mobile">
+                    <div class="section-content">
+                    <div class="section-intro">
+                    <!-- <h2 class="section-title section-title--hed">谁更保值</h2> -->
+
+
+
+                    <div class="range-hero">
+                    <div class="hero-wheels-container">
+                    <div class="wheels-front wheels-nineteen"></div>
+                    <div class="wheels-rear wheels-nineteen"></div>
+                    </div>
+                    </div>
+
+                    <div class="batterytype-ranges">
+                        <div class="battery-option battery-option--75D">
+                            <span class="battery-badge"><h1>品牌</h1></span>
+                            <span class="battery-range-content">197</span>
+                            <span class="battery-range-units">个</span>
+                        </div>
+                        <div class="battery-option battery-option--100D">
+                            <span class="battery-badge"><h1>保值品牌</h1></span>
+                            <span class="battery-range-content">斯巴鲁</span>
+                            <span class="battery-range-units">最高</span>
+                        </div>
+                        <div class="battery-option battery-option--P100D">
+                            <span class="battery-badge"><h1>车总数</h1></span>
+                            <span class="battery-range-content">105648</span>
+                            <span class="battery-range-units">辆</span>
+                        </div>
+                    </div>
+
+
+
+                    </div>
+                    </div>
+                    </section>
+
+
+                    </div></div></div>  </div>
+
+
+
+                                    </div>
+                            </div>
+
+
+                    </div>
+                    </section>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        </div>
+
+        </div>
+    </div>
+
+
+
+
+        <!--图表区域-->
+        <div id="e1">
+            <!--第一个图表 谁更保值-->
+            <div id="title1"><h3 class="pic1-title1">一、各品牌保值率前二十</h3></div>
+            <div id="echarts1" style="height:600px; width:1200px; margin: 0 auto">
+                <div id="pic1" style="height: 100%">
+                    <script type="text/javascript">
+                        var dom = document.getElementById("pic1");
+                        var myChart = echarts.init(dom);
+                        var app = {};
+                        option = null;
+                        app.title = '坐标轴刻度与标签对齐';
+
+                        option = {
+                            color: ['#3398DB'],
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: { // 坐标轴指示器，坐标轴触发有效
+                                    type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                                }
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: [{
+                                type: 'category',
+                                data: ['斯巴鲁', '雷克萨斯', '丰田', '保时捷', '本田', '宝马', '三菱', '马自达', '奔驰', '路虎', '道奇', '日产', '现代', '奥迪', 'DS', '大众', '铃木', '奔腾', '菲亚特', '雷诺'],
+                                axisTick: {
+                                    alignWithLabel: true
+                                },
+                                axisLabel: {
+                                    interval: 0,
+                                    rotate: 35
+                                }
+                            }],
+                            yAxis: [{
+                                type: 'value'
+                            }],
+                            series: [{
+                                name: '万公里价格折损率',
+                                type: 'bar',
+                                barWidth: '60%',
+                                data: [0.078, 0.080, 0.090, 0.091, 0.097, 0.107, 0.108, 0.108, 0.108, 0.112, 0.114, 0.117, 0.119, 0.119, 0.122, 0.127, 0.127, 0.128, 0.129, 0.130]
+                            }]
+                        };
+                        if(option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }
+                    </script>
+                </div>
+                <div id="analysis1">
+
+                </div>
+            </div>
+            <!--第二个图表 供给最大-->
+            <div id="e2"></div>
+            <div id="title1"><h3 class="pic1-title1">二、各品牌二手车总量前二十</h3></div>
+            <div id="echarts2" style="height:600px; width:1200px; margin: 0 auto">
+                <div id="pic2" style="height: 100%">
+                    
+                    <script type="text/javascript">
+                        var dom = document.getElementById("pic2");
+                        var myChart = echarts.init(dom);
+                        var app = {};
+                        option = null;
+                        app.title = '各品牌二手车总量前二十-条形图';
+
+                        option = {
+                            title: {
+                                text: '',
+                                subtext: '数据来自瓜子二手车'
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            legend: {
+                                data: ['2011年', '2012年']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                boundaryGap: [0, 0.01]
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: ['奇瑞', '五菱', '标致', '吉利', '东风', '比亚迪', '哈弗', '长安', '起亚', '日产', '丰田', '本田', '奥迪', '奔驰', '雪佛兰', '宝马', '现代', '福特', '别克', '大众']
+                            },
+                            series: [{
+                                name: '2018年7月二手车数量',
+                                type: 'bar',
+                                data: [1866, 2021, 2054, 2369, 2418, 2437, 2756, 3148, 3205, 3420, 3573, 3607, 3650, 3729, 3815, 4309, 4506, 5018, 5272, 11120]
+                            }]
+                        };;
+                        if(option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }
+                    </script>
+
+                </div>
+                <div id="analysis2">
+
+                </div>
+            </div>
+            <!--第三个图表 价位偏好-->
+            <div id="e3"></div>
+            <div id="title1"><h3 class="pic1-title1">三、各价位二手车数量空间数据</h3></div>
+            <div id="echarts3" style="height:600px; width:1200px; margin: 0 auto">
+                <div id="pic3" style="height: 100%">
+                    
+                    <script type="text/javascript">
+                        var dom = document.getElementById("pic3");
+                        var myChart = echarts.init(dom);
+                        var app = {};
+                        option = null;
+                        app.title = '嵌套环形图';
+
+                        option = {
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                x: 'left',
+                                data: ["0-5万", "5-10万", "10-20万", "20-30万", "30-50万", "50-100万", "100-200万", "200万以上"]
+                            },
+                            series: [{
+                                    name: '访问来源',
+                                    type: 'pie',
+                                    selectedMode: 'single',
+                                    radius: [0, '30%'],
+
+                                    label: {
+                                        normal: {
+                                            position: 'inner'
+                                        }
+                                    },
+                                    labelLine: {
+                                        normal: {
+                                            show: false
+                                        }
+                                    }
+                                },
+                                {
+                                    name: '各价位车数分布',
+                                    type: 'pie',
+                                    radius: ['40%', '55%'],
+                                    label: {
+                                        normal: {
+                                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                                            backgroundColor: '#eee',
+                                            borderColor: '#aaa',
+                                            borderWidth: 1,
+                                            borderRadius: 4,
+                                            // shadowBlur:3,
+                                            // shadowOffsetX: 2,
+                                            // shadowOffsetY: 2,
+                                            // shadowColor: '#999',
+                                            // padding: [0, 7],
+                                            rich: {
+                                                a: {
+                                                    color: '#999',
+                                                    lineHeight: 22,
+                                                    align: 'center'
+                                                },
+                                                // abg: {
+                                                //     backgroundColor: '#333',
+                                                //     width: '100%',
+                                                //     align: 'right',
+                                                //     height: 22,
+                                                //     borderRadius: [4, 4, 0, 0]
+                                                // },
+                                                hr: {
+                                                    borderColor: '#aaa',
+                                                    width: '100%',
+                                                    borderWidth: 0.5,
+                                                    height: 0
+                                                },
+                                                b: {
+                                                    fontSize: 16,
+                                                    lineHeight: 33
+                                                },
+                                                per: {
+                                                    color: '#eee',
+                                                    backgroundColor: '#334455',
+                                                    padding: [2, 4],
+                                                    borderRadius: 2
+                                                }
+                                            }
+                                        }
+                                    },
+                                    data: [{
+                                            value: 30016,
+                                            name: "0-5万"
+                                        },
+                                        {
+                                            value: 37588,
+                                            name: '5-10万'
+                                        },
+                                        {
+                                            value: 23439,
+                                            name: '10-20万'
+                                        },
+                                        {
+                                            value: 7866,
+                                            name: '20-30万'
+                                        },
+                                        {
+                                            value: 4729,
+                                            name: '30-50万'
+                                        },
+                                        {
+                                            value: 1852,
+                                            name: '50-100万'
+                                        },
+                                        {
+                                            value: 136,
+                                            name: '100-200万'
+                                        },
+                                        {
+                                            value: 22,
+                                            name: '200万以上'
+                                        }
+                                    ]
+                                }
+                            ]
+                        };;
+                        if(option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }
+                    </script>
+
+                </div>
+                <div id="analysis3">
+
+                </div>
+            </div>
+            <!--第四个图表 多久卖车-->
+            <div id="e4"></div>
+            <div id="title1"><h3 class="pic1-title1">四、车龄分布玫瑰图</h3></div>
+            <div id="echarts4" style="height:450px; width:1200px; margin: 0 auto">
+                <div id="pic4" style="height: 100%">
+                    
+                    <script type="text/javascript">
+                        var dom = document.getElementById("pic4");
+                        var myChart = echarts.init(dom);
+                        var app = {};
+                        option = null;
+                        app.title = '车龄分布玫瑰图';
+
+                        option = {
+                            title: {
+                                text: '车龄分布玫瑰图',
+                                subtext: 'by PSM',
+                                x: 'center',
+                                y: 'center',
+                            },
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b} : {c} ({d}%)"
+                            },
+                            legend: {
+                                x: 'center',
+                                y: 'bottom',
+                                data: ['0-1年', '1-3年', '3-5年', '5-7年', '7-9年', '9年以上']
+                            },
+                            toolbox: {
+                                show: true,
+                                feature: {
+                                    mark: {
+                                        show: true
+                                    },
+                                    dataView: {
+                                        show: true,
+                                        readOnly: false
+                                    },
+                                    magicType: {
+                                        show: true,
+                                        type: ['funnel']
+                                    },
+                                    restore: {
+                                        show: true
+                                    },
+                                    saveAsImage: {
+                                        show: true
+                                    }
+                                }
+                            },
+                            calculable: true,
+                            series: [
+
+                                {
+                                    name: '各车龄车数分布',
+                                    type: 'pie',
+                                    radius: [100, 150],
+                                    center: ['50%', '50%'],
+                                    roseType: 'area',
+                                    data: [{
+                                            value: 5964,
+                                            name: '0-1年'
+                                        },
+                                        {
+                                            value: 30258,
+                                            name: '1-3年'
+                                        },
+                                        {
+                                            value: 33285,
+                                            name: '3-5年'
+                                        },
+                                        {
+                                            value: 23047,
+                                            name: '5-7年'
+                                        },
+                                        {
+                                            value: 10661,
+                                            name: '7-9年'
+                                        },
+                                        {
+                                            value: 2438,
+                                            name: '9年以上'
+                                        }
+                                    ]
+                                }
+                            ]
+                        };
+                        if(option && typeof option === "object") {
+                            myChart.setOption(option, true);
+                        }
+                    </script>
+
+                </div>
+                <div class="pb50"></div>
+            </div>
+        </div>
+
+    </body>
+
+</html>

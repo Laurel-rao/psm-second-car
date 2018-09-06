@@ -1,0 +1,107 @@
+#container{
+    width:990px;
+    margin: 0 auto;
+}
+
+#container h2{
+    color: #999;
+    font-weight: 400;
+    padding-bottom: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+}
+
+#login{
+    float: right;
+    margin-top: 95px;
+    margin-right: 42px;
+}
+
+#login .form-line{
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+#login .form-line>div{
+    width: 300px;
+    float: right;
+}
+
+#login .form-line>p{
+    float: right;
+    margin-right: 20px;
+    line-height: 40px;
+    color: #999;
+}
+
+#login .form-contro1{
+    width: 300px;
+    height: 40px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    outline: none;
+    padding-left: 15px;
+}
+
+#login p.anchor{
+    float: right;
+}
+
+#login p.anchor a{
+    color: #999;
+}
+
+#login p.saved{
+    float: left;
+    color: #999;
+}
+
+#login p.saved input{
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+#login div.form-line a.goReg{
+    float: right;
+    color: #ff9303;
+    text-decoration: none;
+}
+
+#login div.form-line a.goReg,#login div.form-line .btnLogin{
+    /* 宽度 高度 边框 边框倒角 居中 行高 文字大小 */
+    width: 135px;
+    height: 40px;
+    border: 1px solid #ff9303;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    border-radius: 5px;
+}
+
+#login div.form-line .btnLogin{
+    background-color: #ff9303;
+    color: #fff;
+    cursor:pointer;
+}
+
+#img{
+    position: relative;
+    width: 500px;
+}
+
+#img>a{
+    position: absolute;
+    left: 172px;
+    bottom: 30px;
+    width: 155px;
+    height: 50px;
+    border: 1px solid #ff9303;
+    text-align: center;
+    line-height: 50px;
+    font-size: 18px;
+    color: #ff9303;
+    text-decoration: none;
+    border-radius: 8px;
+}
